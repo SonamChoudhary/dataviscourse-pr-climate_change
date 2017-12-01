@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Climate Change</title>
+    <link rel="stylesheet" href="style_cc.css"/>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+    <script type="text/javascript" src="bower_components/d3/d3.js"></script>
+    <script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+<body>
+<ul class="tab">
+	<li face="verdana" id="can" >CLIMATE CHANGE - What's effected</li>
+    <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Screen')">Screen Cast</a></li>
+    <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Process')">Process Book</a></li>
+    <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Visualization')" >Visualization</a></li>
+    <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'welcome')" id="defaultOpen">Welcome</a></li>
+</ul>
+<div id="welcome" class="tabcontent">
+    <img src="home2.jpg" width="100%" height= "100%"></img>
+</div>
+<div id="Screen" class="tabcontent">
+    <h3>Screen Cast</h3>
+    <iframe class="center" width="1350" height="500" src=""></iframe>
+</div>
+
+<div id="Process" class="tabcontent">
+    <h3>Process book</h3>
+    <object class="center" width="1350" height="600" data="Process_Book.pdf"></object>    
+</div>
+<div id="Visualization" class="tabcontent">
+    <h3>Visualization</h3>
+    <svg width="1350" height="1000" id="Map" class= "body">
+    <g id="mapLayer"></g>
+    <g id="cityLayer"></g>
+    </svg>
+    
+</div>
+
+<script type="text/javascript">
+
+	function openCity(evt, tabname) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+	
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+		
+	 tabcontent = document.getElementsByClassName("hide1");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].className = tabcontent[i].className+" none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(tabname).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+<script type="text/javascript" src="bower_components/d3/d3.js"></script>
+<script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
+<script type="application/javascript" src="map_2.js"></script>
+
+</body>
+</html>
