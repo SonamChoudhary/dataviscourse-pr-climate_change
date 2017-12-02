@@ -1,0 +1,219 @@
+    path {
+            fill: none;
+            stroke-width: 1px;
+            stroke: #222;
+        }
+        .province:hover {
+            fill: #666;
+        }
+        .hidden {
+            display: none;
+        }
+        div.tooltip {
+            color: #222;
+            background-color: #fff;
+            padding: .5em;
+            text-shadow: #f5f5f5 0 1px 0;
+            border-radius: 1px;
+            opacity: 0.9;
+            position: absolute;
+        }
+
+        .axis--x path {
+            display: none;
+        }
+
+        .hot {
+            fill: none;
+            stroke: red;
+            stroke-width: 1.5px;
+        }
+
+        .cold {
+                     fill: none;
+                     stroke: steelblue;
+                     stroke-width: 1.5px;
+                 }
+        .snow {
+            fill: steelblue;
+
+        }
+        .avg {
+            fill: none;
+            stroke: orange;
+            stroke-width: 1.5px;
+        }
+
+        .freeze {
+            fill: none;
+            stroke: black;
+            stroke-width: 1.5px;
+        }
+        .foo {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+        .font{
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .ticks {
+            font: 10px sans-serif;
+        }
+
+        .track,
+        .track-inset,
+        .track-overlay {
+            stroke-linecap: round;
+        }
+
+        .track {
+            stroke: #000;
+            stroke-opacity: 0.3;
+            stroke-width: 10px;
+        }
+
+        .track-inset {
+            stroke: #ddd;
+            stroke-width: 8px;
+        }
+
+        .track-overlay {
+            pointer-events: stroke;
+            stroke-width: 50px;
+            stroke: transparent;
+            cursor: crosshair;
+        }
+
+        .handle {
+            fill: #fff;
+            stroke: #000;
+            stroke-opacity: 0.5;
+            stroke-width: 1.25px;
+        }
+        .body {
+            background-image: url("home3.jpg");
+        }
+        .welcome_body {
+            background-image: url("home2.jpg");
+            text-decoration-color: red;
+        }
+        .welcome_text{
+            font-size: 26px;
+            margin: 10px 50px 75px 100px;
+            padding: 80;
+            font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            color: red;
+        }
+        .footer {
+            position: absolute;
+            right: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: #efefef;
+            text-align: center;
+        }
+        .text {
+            font-family: Veranda, sans-serif;
+            font-size: 15px;
+            color: black;
+            margin: 20px;
+            padding: 0px;
+            margin-left: 0px;
+            background-color: #c8bbbb;
+        }
+
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
+
+    #states {
+      fill: #aaa;
+    }
+
+    #states .active {
+      fill: orange;
+    }
+
+    #state-borders {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.5px;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      pointer-events: none;
+    }
+
+/*
+here are the styles for the tabs in the html
+*/
+
+#btnSelected {
+    padding: 1.5px 11px;
+    background-color: #d9d9d9;
+    color: black;
+}
+
+ul.tab {
+    position: fixed;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    top: 0;
+    width:99%;
+    background-color: #333333;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: right;}
+
+/* for the title float left */
+
+ul.tab #left {float: left !important;
+font-size : 30px;
+}
+
+
+ul.tab #can {float: left !important;
+font-size : 40px;
+font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+color:white;
+}
+
+
+ul.tab #leftcap {float: left !important;
+font-size : 12px;
+padding-left: 90px;
+}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: #b5cac8;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 19px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {background-color: #ddd;}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {background-color: #5d7171;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 8px 0px;
+    
+    border-top: none;
+    color: #fdfdfd;
+    }
+.block {
+    display: inline-block !important;
+    }
