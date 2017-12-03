@@ -245,7 +245,7 @@
                     tooltip.classed('hidden', false)
                         .attr('style', 'left:' + (mouse[0]) +
                             'px; top:' + (mouse[1] ) + 'px')
-                        .html("AVG Temp"+ element.TAVG);
+                        .html("AVG Temp");
                 })
                 .on('mouseout', function () {
                     tooltip.classed('hidden', true);
@@ -717,7 +717,7 @@
                 .attr("y",-30 )
                 .attr("text-anchor", "start")
                 .style("font-size", "18px")
-                .text("Snow Totals ()")
+                .text("Snow Totals (Inches)")
                 .attr("transform", "rotate(-90)");
 
             barchart.append("text")
