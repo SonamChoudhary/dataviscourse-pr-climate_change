@@ -6,7 +6,7 @@ PROJECT REPOSITORY URL: https://github.com/SonamChoudhary/dataviscourse-pr-clima
 
 PROJECT WEBSITE URL: https://u1064180.github.io/
 
-PROJECT SCREENCAST URL: https://github.com/SonamChoudhary/SonamChoudhary.github.io/blob/master/Video.MOV
+PROJECT SCREENCAST URL: https://www.youtube.com/watch?v=tvgYBrepUWU&feature=youtu.be
 
 ##SUBMISSION DETAILS:
 
