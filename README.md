@@ -2,7 +2,7 @@
 
 PROJECT MEMBERS: Taylor Preusch(u1064180 ) Sonam Choudhary(u1069221)
 
-PROJECT REPOSITORY URL:
+PROJECT REPOSITORY URL: https://github.com/SonamChoudhary/dataviscourse-pr-climate_change/releases/tag/2.0
 
 PROJECT WEBSITE URL: 
 
