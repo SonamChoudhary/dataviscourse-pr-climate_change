@@ -37,7 +37,7 @@
             .attr("width", line_width + margin.left + margin.right +20)
             .attr("height", line_height + margin.top + margin.bottom +20)
             .attr("x",0)
-            .attr("y",700)
+            .attr("y",1000)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -46,127 +46,133 @@
             .attr("width", line_width + margin.left + margin.right)
             .attr("height", line_height + margin.top + margin.bottom+20)
             .attr("x",700)
-            .attr("y",700)
+            .attr("y",1000)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
-
         let svg = d3.select("svg");
         let width = parseInt(svg.attr("width"));
         let height = parseInt(svg.attr("height"));
-        let projection = d3.geoAlbersUsa()
-            .translate([width / 2, height / 2-250])
-            .scale(width);    
-        let path = d3.geoPath().projection(projection);
-        // Load in GeoJSON data
-        var tooltip = d3.select('body').append('div')
-            .attr('class', 'hidden tooltip');
-        d3.csv("states_name.csv", function (error, name){
-            if (error) throw error;
-        d3.json("us-states.json", function (json) {
-            d3.select("#mapLayer").selectAll("path")
-                .data(json.features)
-                .enter()
-                .append("path")
-                .attr("d", path)
-                .style("fill", "#ADD8E6")
-                .on('mouseover', function (d) {
-                d3.select(this).classed('hidden',false).style("fill","orange");
-                })
-                .on('mouseout',function(d){
-                    d3.select(this).style("fill", "#ADD8E6");
-                });   
-            svg.selectAll("text")
-            .data(json.features)
-            .enter()
-            .append("svg:text")
-            .text(function(d){
-                name.forEach(function(element){
-                    if (d.properties.name == element.State)
-                        id = element.Abbreviation;
+
+        //======================================================================================================================
+
+
+            let projection = d3.geoAlbersUsa()
+                .translate([width / 2, height / 2 - 250])
+                .scale(width);
+            let path = d3.geoPath().projection(projection);
+
+            // Load in GeoJSON data
+
+            var tooltip = d3.select('body').append('div')
+                .attr('class', 'hidden tooltip');
+            d3.csv("states_name.csv", function (error, name) {
+                if (error) throw error;
+                d3.json("us-states.json", function (json) {
+                    d3.select("#mapLayer").selectAll("path")
+                        .data(json.features)
+                        .enter()
+                        .append("path")
+                        .attr("d", path)
+                        .style("fill", "#ADD8E6")
+                        .on('mouseover', function (d) {
+                            d3.select(this).classed('hidden', false).style("fill", "orange");
+                        })
+                        .on('mouseout', function (d) {
+                            d3.select(this).style("fill", "#ADD8E6");
                         });
-                return id;
-                })
-            .attr("x", function(d){
-                return path.centroid(d)[0];
-                })
-            .attr("y", function(d){
-                return  path.centroid(d)[1];
-                })
-            .attr("text-anchor","middle")
-            .attr('font-size','10pt');
-
-        });
-         
-        var tooltip = d3.select('body').append('div')
-            .attr('class', 'hidden tooltip');
-//======================================================================================================================
-        d3.csv("data1.csv", function (data) {
-            d3.select("#cityLayer").selectAll("circle")
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("cx", function (d) {
-                    return projection([d.LONGITUDE, d.LATITUDE])[0];
-                })
-                .attr("cy", function (d) {
-                    return projection([d.LONGITUDE, d.LATITUDE])[1];
-                })
-                .attr("r", 3)
-                .attr( "fill", "#e36464" )
-                .attr( "stroke", "black" )
-                .style("opacity", 0.1)
-                .on('mousemove', function (d) {
-
-                    var mouse = d3.mouse(svg.node()).map(function (d) {
-                        return parseInt(d);
-                    })
-                    tooltip.classed('hidden', false)
-                        .attr('style', 'left:' + (mouse[0]) +
-                            'px; top:' + (mouse[1] - 2) + 'px')
-                        .html(d.STATION_NAME);
-                })
-                .on('mouseout', function () {
-                    tooltip.classed('hidden', true);
-                })
-                .on("click", function (d) {
-                     /*svg.selectAll("path")
-                        .transition()
-                        .duration(750)
-                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale("+600+")");*/
-                    var l = "";
-                    var data_list = [];
-                    data.forEach(function (element) {
-                        if (element.STATION_NAME == d.STATION_NAME)
-                            data_list.push(element);
-                    });
-                    // append the svg obgect to the body of the page
-                    // appends a 'group' element to 'svg'
-                    // moves the 'group' element to the top left margin
-                    line_chart(l,data_list);
-                    bar_chart(data_list);
-                    temp_slider(data_list);
-                    //var animal_data;
-                    d3.csv("Animal1_modified2.csv", function (error, animal_data) {
-                        if (error) throw error;
-                        animal_new(data_list, animal_data,name);
-                        //animal(data_list, animal_data);
-                        //skipic();
-                        //animallist(data_list, animal_data);
-                    });
+                    svg.selectAll("text")
+                        .data(json.features)
+                        .enter()
+                        .append("svg:text")
+                        .text(function (d) {
+                            name.forEach(function (element) {
+                                if (d.properties.name == element.State)
+                                    id = element.Abbreviation;
+                            });
+                            return id;
+                        })
+                        .attr("x", function (d) {
+                            return path.centroid(d)[0];
+                        })
+                        .attr("y", function (d) {
+                            return path.centroid(d)[1];
+                        })
+                        .attr("text-anchor", "middle")
+                        .attr('font-size', '10pt');
 
                 });
-        });
 
-});
+                var tooltip = d3.select('body').append('div')
+                    .attr('class', 'hidden tooltip');
+
+//======================================================================================================================
+                d3.csv("data1.csv", function (data) {
+                    d3.select("#cityLayer").selectAll("circle")
+                        .data(data)
+                        .enter()
+                        .append("circle")
+                        .attr("cx", function (d) {
+                            return projection([d.LONGITUDE, d.LATITUDE])[0];
+                        })
+                        .attr("cy", function (d) {
+                            return projection([d.LONGITUDE, d.LATITUDE])[1];
+                        })
+                        .attr("r", 3)
+                        .attr("fill", "#e36464")
+                        .attr("stroke", "black")
+                        .style("opacity", 0.1)
+                        .on('mousemove', function (d) {
+
+                            var mouse = d3.mouse(svg.node()).map(function (d) {
+                                return parseInt(d);
+                            })
+                            tooltip.classed('hidden', false)
+                                .attr('style', 'left:' + (mouse[0]) +
+                                    'px; top:' + (mouse[1] - 2) + 'px')
+                                .html(d.STATION_NAME);
+                        })
+                        .on('mouseout', function () {
+                            tooltip.classed('hidden', true);
+                        })
+                        .on("click", function (d) {
+                            /*svg.selectAll("path")
+                               .transition()
+                               .duration(750)
+                               .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale("+600+")");*/
+                            var l = "";
+                            var data_list = [];
+                            data.forEach(function (element) {
+                                if (element.STATION_NAME == d.STATION_NAME)
+                                    data_list.push(element);
+                            });
+                            // append the svg obgect to the body of the page
+                            // appends a 'group' element to 'svg'
+                            // moves the 'group' element to the top left margin
+
+                            var ht = 800;
+                            line_chart(l, data_list);
+                            bar_chart(l,data_list);
+                            temp_slider(data_list);
+                            text_boxes(data_list);
+
+                            //var animal_data;
+                            d3.csv("Animal1_modified2.csv", function (error, animal_data) {
+                                if (error) throw error;
+                                animal_new(data_list, animal_data, name);
+                                //animal(data_list, animal_data);
+                                //skipic();
+                                //animallist(data_list, animal_data);
+                            });
+
+                        });
+                });
+
+            });
+
+
         //======================================================================================================================
         function line_chart(l,data_list) {
-            data_list.forEach(function (d, i) {
-                if (d.STATION_NAME === "TAO NM US") {
-                    d.push(d);
-
-                }
-            });
 
             data_list.forEach(function (d) {
                 d.TMAX = +d["DLY-TMAX-NORMAL"]+l;
@@ -295,14 +301,14 @@
 
         }
         //======================================================================================================================
-        function bar_chart(data_list) {
+        function bar_chart(l,data_list) {
 
             data_list.forEach(function (d) {
 
                 d.TMAX = +d["DLY-TMAX-NORMAL"];
                 d.TMIN = +d["DLY-TMIN-NORMAL"];
                 d.TAVG = +d["DLY-TAVG-NORMAL"];
-                d.TSNOW = +d["YTD-SNOW-NORMAL"];
+                d.TSNOW = +d["YTD-SNOW-NORMAL"] - l;
                 d.date = d.DATE.slice(0, -2);
                 d.date = +d.date.slice(4);
 
@@ -377,36 +383,7 @@
                 .attr("class", "y-axis")
                 .call(d3.axisLeft(y));
 
-            barchart.append("text")
-                .attr("x",-180)
-                .attr("y",-30 )
-                .attr("text-anchor", "start")
-                .style("font-size", "18px")
-                .text("Snow Totals ()")
-                .attr("transform", "rotate(-90)");
 
-            barchart.append("text")
-                .attr("x", 100)
-                .attr("y",line_height+50)
-                .style("font-size", "18px")
-                .text("Date")
-                .attr("text-anchor", "start");    
-
-            svg_line.append("text")
-                .attr("x", 100)
-                .attr("y",line_height+50)
-                .attr("text-anchor", "start")
-                .style("font-size", "18px")
-                .text("Date");
-
-            svg_line.append("text")
-                .attr("x",-180)
-                .attr("y",-30 )
-                .attr("text-anchor", "start")
-                .style("font-size", "18px")
-                .text("Temperature(celsius)")
-                .attr("transform", "rotate(-90)");
-            
 
         }
 //======================================================================================================================
@@ -453,6 +430,10 @@
             //console.log(state);
             //console.log("length", animal_list.length, animal_list[0]);
            // var name;
+
+            var g;
+            d3.select("#animalsvg").remove();
+            d3.select("#animalImg").remove();
             for ( var i = 0; i< animal_list.length; i++)
             {
                 if (animal_list[i].States_Found.indexOf(state) > -1) 
@@ -460,19 +441,24 @@
                                 //console.log(animal_list[i].Common_Name,element.Image);
                                 //return element.Common_Name,element.Image;
                                 name = animal_list[i].Common_Name;
-                                console.log(name,"-------");
+                                console.log(name);
                                 break;
                             }
             }            
             var image=" ";
             //console.log("---------",image);
-            var svg2 = d3.select("#Animal_Img");
+
+
+            var svg2 = d3.select("#Map");
+
             var g = svg2.append("g");
+
             var img = g.append("svg:image")
+                .attr("id","animalsvg")
                 .attr("width", 300)
                 .attr("height", 200)
-                .attr("x", 30)
-                .attr("y", 50)
+                .attr("x", -50)
+                .attr("y", 0)
                 .attr("xlink:href", function(d){       
                         if(name == "Snowshoe hare")
                         {
@@ -518,7 +504,7 @@
                         {
                            return image = "American_Jackal.png";
                         }
-                        else if(name == "American Black Bear")
+                        else if(name === "American Black Bear")
                         {
                            return image = "American_Black_Bear.jpg";
                         }
@@ -531,7 +517,73 @@
                             return "Snowshoe_hare.png";
                         }
                 });
-    
+            var info = g.append("text")
+                .attr("id","animalImg")
+                .attr("width", 300)
+                .attr("height", 200)
+                .attr("x", 0)
+                .attr("y", 210)
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text(function(d){
+                    if(name == "Snowshoe hare")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "American pika")
+                    {
+                        return name + ": SAVE ME!";
+                    }
+                    else if(name == "Reindeer")
+                    {
+                        return name +": SAVE ME!";
+                    }
+                    else if(name == "Brown Bear")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Canadian lynx")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Wolverine")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "American Beaver")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Puma")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Yellow-bellied Marmot")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Mule Deer")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "American Jackal")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name === "American Black Bear")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else if(name == "Mountain Sheep")
+                    {
+                        return  name +": SAVE ME!";
+                    }
+                    else
+                    {
+                        return "Snowshoe_hare: SAVE ME!";
+                    }
+                });
+
         }
 
         //======================================================================================================================
@@ -558,7 +610,7 @@
 
             svg.append("text")
                 .attr("x", (1200 / 2))
-                .attr("y",575)
+                .attr("y",875)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
@@ -571,7 +623,7 @@
 
             var slider = svg.append("g")
                 .attr("class", "slider")
-                .attr("transform", "translate(" + margin.left + "," + height/2 + ")");
+                .attr("transform", "translate(" + margin.left + "," + 900+ ")");
 
             slider.append("line")
                 .attr("class", "track")
@@ -594,6 +646,7 @@
                         var l = x.invert(d3.event.x);
                         line_chart(l,data_list);
                         temp_update(l,data_list);
+                        bar_chart(l,data_list);
 
                     }));
 
@@ -651,6 +704,101 @@
            // console.log(thaw_day.length);
            // console.log(freeze_day.length);
         }
+        //======================================================================================================================
+        function text_boxes(){
+            var svg2 = d3.select("#Map");
+            var g = svg2.append("g");
+            var snowinfo = g.append("text");
+            var tempinfo = g.append("text");
 
-  
+            barchart.append("text")
+                .attr("id", "label")
+                .attr("x",-180)
+                .attr("y",-30 )
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("Snow Totals ()")
+                .attr("transform", "rotate(-90)");
+
+            barchart.append("text")
+                .attr("id", "label")
+                .attr("x", 100)
+                .attr("y",line_height+50)
+                .style("font-size", "18px")
+                .text("Date")
+                .attr("text-anchor", "start");
+
+            svg_line.append("text")
+                .attr("id", "label")
+                .attr("x", 100)
+                .attr("y",line_height+50)
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("Date");
+
+            svg_line.append("text")
+                .attr("id", "label")
+                .attr("x",-180)
+                .attr("y",-30 )
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("Temperature(F)")
+                .attr("transform", "rotate(-90)");
+
+
+
+            tempinfo = g.append("text")
+                .attr("id", "label")
+                .attr("width", 300)
+                .attr("height", 400)
+                .attr("x", 0)
+                .attr("y", 1080 + line_height+20)
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("The above graph show average temperature at the ski area throughout the year.")
+                .append("svg:tspan")
+                .attr("x",0)
+                .attr("dy",20)
+                .text("The red line is the average high from 1970 through 2010. The yellow line is the ")
+                .append("svg:tspan")
+                .attr("x",0)
+                .attr("dy",20)
+                .text("average temp. The blue line is the averagelow. When the temperature slider is moved")
+                .append("svg:tspan")
+                .attr("x",0)
+                .attr("dy",20)
+                .text(" the temperature is graphically adjusted accordingly.")
+                .append("svg:tspan")
+                .attr("x",0)
+                .attr("dy",20)
+                .text("This visualization is meant to show the significance a few degrees ")
+                .append("svg:tspan")
+                .attr("x",0)
+                .attr("dy",20)
+                .text("difference can do to a ski area");
+
+
+            snowinfo = g.append("text")
+                .attr("id", "label")
+                .attr("width", 300)
+                .attr("height", 400)
+                .attr("x", 700)
+                .attr("y", 1080 + line_height+20)
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("The above graph show the total snowfall amounts on average for the ski mountain ")
+                .append("svg:tspan")
+                .attr("x",700)
+                .attr("dy",20)
+                .text("through the year. The color encodes the probability it will snow 10 inches in a ")
+                .append("svg:tspan")
+                .attr("x",700)
+                .attr("dy",20)
+                .text("single day. As the temperature bar is moved the graph shifts to show the decrease ")
+                .append("svg:tspan")
+                .attr("x",700)
+                .attr("dy",20)
+                .text("in snowfall for the year");
+
+        }
 
