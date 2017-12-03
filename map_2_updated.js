@@ -2,7 +2,7 @@
         //set the dimensions and margins of the graph
         var margin = {top: 10, right: 20, bottom: 50, left: 50},
             line_width = 460 - margin.left - margin.right,
-            line_height = 300 - margin.top - margin.bottom;
+            line_height = 350 - margin.top - margin.bottom;
 
 // set the ranges
         var x = d3.scaleLinear().range([0, line_width]);
@@ -34,19 +34,19 @@
                 return y(d.TAVG);
             }); 
         var svg_line = d3.select("#Map").append("svg")
-            .attr("width", line_width + margin.left + margin.right)
-            .attr("height", line_height + margin.top + margin.bottom)
+            .attr("width", line_width + margin.left + margin.right +20)
+            .attr("height", line_height + margin.top + margin.bottom +20)
             .attr("x",0)
-            .attr("y",600)
+            .attr("y",700)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
         var barchart = d3.select("#Map").append("svg")
             .attr("width", line_width + margin.left + margin.right)
-            .attr("height", line_height + margin.top + margin.bottom)
+            .attr("height", line_height + margin.top + margin.bottom+20)
             .attr("x",700)
-            .attr("y",600)
+            .attr("y",700)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -56,9 +56,11 @@
         let height = parseInt(svg.attr("height"));
         let projection = d3.geoAlbersUsa()
             .translate([width / 2, height / 2-250])
-            .scale([800]);    
+            .scale(width);    
         let path = d3.geoPath().projection(projection);
         // Load in GeoJSON data
+        var tooltip = d3.select('body').append('div')
+            .attr('class', 'hidden tooltip');
         d3.csv("states_name.csv", function (error, name){
             if (error) throw error;
         d3.json("us-states.json", function (json) {
@@ -92,7 +94,7 @@
                 return  path.centroid(d)[1];
                 })
             .attr("text-anchor","middle")
-            .attr('font-size','5pt');
+            .attr('font-size','10pt');
 
         });
          
@@ -111,9 +113,9 @@
                     return projection([d.LONGITUDE, d.LATITUDE])[1];
                 })
                 .attr("r", 3)
-                .attr( "fill", "#900" )
+                .attr( "fill", "#e36464" )
                 .attr( "stroke", "black" )
-                .style("opacity", 0.3)
+                .style("opacity", 0.1)
                 .on('mousemove', function (d) {
 
                     var mouse = d3.mouse(svg.node()).map(function (d) {
@@ -128,6 +130,10 @@
                     tooltip.classed('hidden', true);
                 })
                 .on("click", function (d) {
+                     /*svg.selectAll("path")
+                        .transition()
+                        .duration(750)
+                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale("+600+")");*/
                     var l = "";
                     var data_list = [];
                     data.forEach(function (element) {
@@ -190,15 +196,54 @@
 
             line.enter().append("path")
                 .attr("class", "hot")
-                .attr("d", max);
+                .attr("d", max)
+                .on('mousemove', function (element) {
+
+                    var mouse = d3.mouse(svg.node()).map(function (d) {
+                        return parseInt(d);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (mouse[0]) +
+                            'px; top:' + (mouse[1] ) + 'px')
+                        .html("MAX Temp");
+                })
+                .on('mouseout', function () {
+                    tooltip.classed('hidden', true);
+                });
 
             line.enter().append("path")
                 .attr("class", "cold")
-                .attr("d", min);
+                .attr("d", min)
+                .on('mousemove', function (element) {
+
+                    var mouse = d3.mouse(svg.node()).map(function (d) {
+                        return parseInt(d);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (mouse[0]) +
+                            'px; top:' + (mouse[1] ) + 'px')
+                        .html("MIN Temp");
+                })
+                .on('mouseout', function () {
+                    tooltip.classed('hidden', true);
+                });;
 
             line.enter().append("path")
                 .attr("class", "avg")
-                .attr("d", avg);
+                .attr("d", avg)
+                .on('mousemove', function (element) {
+
+                    var mouse = d3.mouse(svg.node()).map(function (d) {
+                        return parseInt(d);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (mouse[0]) +
+                            'px; top:' + (mouse[1] ) + 'px')
+                        .html("AVG Temp"+ element.TAVG);
+                })
+                .on('mouseout', function () {
+                    tooltip.classed('hidden', true);
+                });
 
             // Add the X Axis
             line = svg_line.selectAll("g")
@@ -228,21 +273,24 @@
                 .attr("x2", line_width)
                 .attr("y1", y(32))
                 .attr("y2", y(32))
-                .attr("class", "freeze");
+                .attr("class", "freeze")
+                .on('mousemove', function (d) {
 
-            var focus = svg.append("g")
-                .attr("class", "focus")
-                .style("display", "none");
+                    var mouse = d3.mouse(svg.node()).map(function (d) {
+                        return parseInt(d);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (mouse[0]) +
+                            'px; top:' + (mouse[1]-5 ) + 'px')
+                        .html("freeze_day");
+                })
+                .on('mouseout', function () {
+                    tooltip.classed('hidden', true);
+                });
 
-            focus.append("circle")
-                .attr("r", 4.5);
-
-        var rect = focus.append("rect")
-                .attr("x", 9)
-                .attr("dy", ".35em")
-                .attr("width", 50)
-                .attr("height", 50)
-                .attr("fill", "yellow");
+            //line.append("circle")
+                
+            //d3.select("#textbox").append(div);
 
 
         }
@@ -293,7 +341,20 @@
                 .attr("width", function (d, i) {
                     return (line_width) / 365
                 })
-                .style("fill", function(d, i ) { return colorScale(d["DLY-SNOW-PCTALL-GE100TI"]); });
+                .style("fill", function(d, i ) { return colorScale(d["DLY-SNOW-PCTALL-GE100TI"]); })
+                .on('mousemove', function (element,i) {
+
+                    var mouse = d3.mouse(svg.node()).map(function (d) {
+                        return parseInt(d);
+                    });
+                    tooltip.classed('hidden', false)
+                        .attr('style', 'left:' + (mouse[0]) +
+                            'px; top:' + (mouse[1] ) + 'px')
+                        .html("Date: "+element.date4+"\n"+"Snow Level:"+element.TSNOW);
+                })
+                .on('mouseout', function () {
+                    tooltip.classed('hidden', true);
+                });
 
 
             // Add the X Axis
@@ -317,20 +378,35 @@
                 .call(d3.axisLeft(y));
 
             barchart.append("text")
-                .attr("x", line_width/2)
-                .attr("y",0)
-                .attr("text-anchor", "middle")
+                .attr("x",-180)
+                .attr("y",-30 )
+                .attr("text-anchor", "start")
                 .style("font-size", "18px")
-                .style("text-decoration", "underline")
-                .text("Snow Totals");
+                .text("Snow Totals ()")
+                .attr("transform", "rotate(-90)");
+
+            barchart.append("text")
+                .attr("x", 100)
+                .attr("y",line_height+50)
+                .style("font-size", "18px")
+                .text("Date")
+                .attr("text-anchor", "start");    
 
             svg_line.append("text")
-                .attr("x", line_width/2)
-                .attr("y",0)
-                .attr("text-anchor", "middle")
+                .attr("x", 100)
+                .attr("y",line_height+50)
+                .attr("text-anchor", "start")
                 .style("font-size", "18px")
-                .style("text-decoration", "underline")
-                .text("Temperature High/Averge/Low");
+                .text("Date");
+
+            svg_line.append("text")
+                .attr("x",-180)
+                .attr("y",-30 )
+                .attr("text-anchor", "start")
+                .style("font-size", "18px")
+                .text("Temperature(celsius)")
+                .attr("transform", "rotate(-90)");
+            
 
         }
 //======================================================================================================================
@@ -482,7 +558,7 @@
 
             svg.append("text")
                 .attr("x", (1200 / 2))
-                .attr("y",475)
+                .attr("y",575)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
